@@ -44,8 +44,8 @@ int main()
 
   // Armement des signaux
   A.sa_handler=HandlerSIGINT;
-  A.sa_flags=0;
   sigemptyset(&A.sa_mask); 
+  A.sa_flags=0;
 
   if(sigaction(SIGINT, &A, NULL)==-1){
     perror("Erreur sigaction (Serveur)\n");
@@ -73,7 +73,7 @@ int main()
   }
   fprintf(stderr,"(SERVEUR) idQ=%d\n", idQ);
 
-
+  fprintf(stderr,"(SERVEUR %d) Creation de la mémoire partagée\n",getpid());
   idShm=shmget(CLE,200, IPC_CREAT | IPC_EXCL | 0600);
   if(idShm==-1){
     perror("Erreur shmget (Serveur)\n");
@@ -744,8 +744,8 @@ int Login(MESSAGE *m){
   pos=estPresent(m->data2);
   char requete[200];
     
-  if(strcmp(m->data1, "1")==0){ // nouvel utilisateur
-      if(pos>0){// position trouvée dans le fichier
+  if(strcmp(m->data1, "1")==0){ 
+      if(pos>0){
         strcpy(m->texte, "Utilisateur déjà existant !");
         ok=0;
       }
@@ -754,9 +754,10 @@ int Login(MESSAGE *m){
 
         snprintf(requete, sizeof(requete), "INSERT INTO UNIX_FINAL(nom, gsm, email) VALUES ('%s', '---', '---')", m->data2);
 
-         if(mysql_query(connexion,requete)!=0){
+        if(mysql_query(connexion,requete)!=0){
           fprintf(stderr,"Erreur mysql query consultation\n");
         }
+
         strcpy(m->texte, "Nouvel utilisateur créé : bienvenue !");
         ok=1;
       }
@@ -765,18 +766,18 @@ int Login(MESSAGE *m){
         ok=0;
       }
   }
-  else{// ancien utilisateur
+  else{
     if(pos==0){
       strcpy(m->texte, "Utilisateur inconnu...!");
       ok=0;
     }
     else if(pos>0){
       verif=verifieMotDePasse(pos, m->texte);
-      if(verif==1){ // mot de passe ok
+      if(verif==1){ 
         strcpy(m->texte, "Re-bonjour cher utilisateur!");
         ok=1;
       }
-      else if(verif==0){ // mot de passe incorrect
+      else if(verif==0){ 
         strcpy(m->texte, "Mot de passe incorrect...");
         ok=0;
       }

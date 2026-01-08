@@ -1,6 +1,6 @@
 .SILENT :
 
-all : CreationBD.o BidonFichierPub.o Serveur.o Administrateur Publicite.o Modification.o Client Consultation.o
+all : CreationBD BidonFichierPub Serveur Administrateur Publicite Modification Client Consultation
 
 mainAdmin.o : mainAdmin.cpp
 	echo Creation compilation mainAdmin.o
@@ -43,27 +43,27 @@ Client : dialogmodification.o mainClient.o windowclient.o moc_dialogmodification
 	echo Creation compilation Client
 	g++  -o Client dialogmodification.o mainClient.o windowclient.o moc_dialogmodification.o moc_windowclient.o   /usr/lib64/libQt5Widgets.so /usr/lib64/libQt5Gui.so /usr/lib64/libQt5Core.so /usr/lib64/libGL.so -lpthread
 
-Serveur.o : Serveur.cpp FichierUtilisateur.o 
+Serveur : Serveur.cpp FichierUtilisateur.o 
 	echo Creation compilation Serveur.o
 	g++ Serveur.cpp -o Serveur FichierUtilisateur.o  -I/usr/include/mysql -m64 -L/usr/lib64/mysql -lmysqlclient -lpthread -lz -lm -lrt -lssl -lcrypto -ldl
 
-CreationBD.o : CreationBD.cpp
+CreationBD : CreationBD.cpp
 	echo Creation compilation CreationBD.o
 	g++ -o CreationBD CreationBD.cpp -I/usr/include/mysql -m64 -L/usr/lib64/mysql -lmysqlclient -lpthread -lz -lm -lrt -lssl -lcrypto -ldl
 
-BidonFichierPub.o : BidonFichierPub.cpp
+BidonFichierPub : BidonFichierPub.cpp
 	echo Creation compilation BidonFichierPub.o 
 	g++ -o BidonFichierPub BidonFichierPub.cpp
 
-Publicite.o : Publicite.cpp
+Publicite : Publicite.cpp
 	echo Creation compilation Publicite.o 
 	g++ -o Publicite Publicite.cpp
 
-Consultation.o : Consultation.cpp
+Consultation : Consultation.cpp
 	echo Creation compilation Consultation.o 
 	g++ Consultation.cpp -o Consultation -I/usr/include/mysql -m64 -L/usr/lib64/mysql -lmysqlclient -lpthread -lz -lm -lrt -lssl -lcrypto -ldl
 
-Modification.o : Modification.cpp FichierUtilisateur.o 
+Modification : Modification.cpp FichierUtilisateur.o 
 	echo Creation compilation Modification.o 
 	g++ Modification.cpp -o Modification FichierUtilisateur.o -I/usr/include/mysql -m64 -L/usr/lib64/mysql -lmysqlclient -lpthread -lz -lm -lrt -lssl -lcrypto -ldl
 

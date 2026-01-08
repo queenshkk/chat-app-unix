@@ -40,7 +40,6 @@ WindowClient::WindowClient(QWidget *parent):QMainWindow(parent),ui(new Ui::Windo
     ::close(2);
     logoutOK();
 
-    
 
     // Recuperation de l'identifiant de la file de messages
     fprintf(stderr,"(CLIENT %d) Recuperation de l'id de la file de messages\n",getpid());
@@ -452,27 +451,27 @@ void WindowClient::on_pushButtonLogin_clicked()
 
     MESSAGE m;
 
-  m.type=1;
-  m.expediteur=getpid();
-  m.requete=LOGIN;
+    m.type=1;
+    m.expediteur=getpid();
+    m.requete=LOGIN;
 
-  if(isNouveauChecked()){
-    strcpy(m.data1, "1");
-  }else{
-    strcpy(m.data1, "0");
-  }
-
-
-  strcpy(m.data2, getNom());
-  strcpy(m.texte, getMotDePasse());
+    if(isNouveauChecked()){
+      strcpy(m.data1, "1");
+    }else{
+      strcpy(m.data1, "0");
+    }
 
 
-  fprintf(stderr,"Envoie requête login (Client)\n");
+    strcpy(m.data2, getNom());
+    strcpy(m.texte, getMotDePasse());
 
-  if(msgsnd(idQ,&m,sizeof(MESSAGE)-sizeof(long), 0)==-1){ 
-      perror("Erreur de msgsnd login (Client)\n");
-      exit(1);
-  }
+
+    fprintf(stderr,"Envoie requête login (Client)\n");
+
+    if(msgsnd(idQ,&m,sizeof(MESSAGE)-sizeof(long), 0)==-1){ 
+        perror("Erreur de msgsnd login (Client)\n");
+        exit(1);
+    }
 
 
 }
